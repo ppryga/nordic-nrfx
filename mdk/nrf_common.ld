@@ -324,9 +324,9 @@ SECTIONS
 
     /* No-init section. */
     . = ALIGN(4);
-    __noinit_start = .; PROVIDE(__noinit_start__ = .);
     .noinit (NOLOAD):
     {
+        __noinit_start = .; PROVIDE(__noinit_start__ = .);
         *(.noinit .noinit.*)
         *(.no_init .no_init.*)
         *(.noninit .noninit.*)
@@ -337,13 +337,13 @@ SECTIONS
     __noinit_end          = __noinit_start + __noinit_size;
     __noinit_end__        = __noinit_end;
     ASSERT(__noinit_start == __noinit_end || (__noinit_end - ORIGIN(RAM)) <= LENGTH(RAM) , "error: .noinit is too large to fit in RAM memory segment")
-    
+
     
     /* .bss section */
     . = ALIGN(4);
-    __bss_start = .; PROVIDE(__bss_start__ = .);
     .bss (NOLOAD):
     {
+        __bss_start = .; PROVIDE(__bss_start__ = .);
         *(.bss* .gnu.linkonce.b.*)
         *(.dynbss)
         *(COMMON)
@@ -357,9 +357,9 @@ SECTIONS
 
     /* .sbss section */
     . = ALIGN(4);
-    __sbss_start = .;
     .sbss (NOLOAD):
     {
+        __sbss_start = .; PROVIDE(__sbss_start__ = .);
         *(.sbss .sbss.* .gnu.linkonce.sb.*)
         *(.sbss2 .sbss2.* .gnu.linkonce.sb2.*)
         *(.dynsbss)
@@ -372,9 +372,9 @@ SECTIONS
 
     /* .tbss section */
     . = ALIGN(4);
-    __tbss_start = .;
     .tbss (NOLOAD):
     {
+        __tbss_start = .;
         . = ALIGN(4);
         *(.tbss .tbss.* .gnu.linkonce.tb.*)
         *(.tcommon)
