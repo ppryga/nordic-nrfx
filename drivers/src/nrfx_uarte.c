@@ -372,6 +372,11 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
     nrfy_uarte_event_clear(p_instance->p_reg, NRF_UARTE_EVENT_TXSTOPPED);
     nrfy_uarte_tx_buffer_set(p_instance->p_reg, p_cb->p_tx_buffer, p_cb->tx_buffer_length);
 
+    if (p_cb->handler) {
+        nrfy_uarte_int_enable(p_instance->p_reg, NRF_UARTE_INT_ERROR_MASK |
+                                                     NRF_UARTE_INT_ENDTX_MASK);
+    }
+
     uint32_t evt_mask = nrfy_uarte_tx_start(p_instance->p_reg, !p_cb->handler);
     if (p_cb->handler == NULL)
     {
@@ -387,6 +392,7 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
         }
         p_cb->tx_buffer_length = 0;
     }
+
     NRFX_LOG_INFO("Function: %s, error code: %s.", __func__, NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
